@@ -1,5 +1,7 @@
-<h3>Pokemon List</h3>
-{{pokemonList | async | json}}
+<mat-toolbar color="primary" fxLayoutAlign="space-between center">
+    <button mat-button>
+        <h1>PokeApi App</h1>
+    </button>
+</mat-toolbar>
 
-<h4>Details on Mewtwo</h4>
-{{pokemonDetails | async | json}}
+<router-outlet></router-outlet>

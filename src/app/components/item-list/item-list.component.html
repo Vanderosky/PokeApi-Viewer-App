@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-form-field>
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Ex. Pikachu">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Search by</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let option of options" [value]="option.value">
+        {{option.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-mini-fab >
+    <mat-icon>search</mat-icon>
+
+  </button>
+
+</mat-card>
+<mat-grid-list cols="3" rowHeight="100px">
+  <mat-grid-tile
+      *ngFor="let tile of PokeListTiles"
+      [colspan]="tile.cols"
+      [rowspan]="tile.rows"
+      [style.background]="tile.color">
+    {{tile.text | titlecase}}
+  </mat-grid-tile>
+</mat-grid-list>
+
