@@ -23,7 +23,8 @@
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
       [style.background]="tile.color">
-    {{tile.text | titlecase}}
+      <!-- {{tile.text | titlecase}} -->
+    <app-pokemon [pokemonName]="tile.text"></app-pokemon>
   </mat-grid-tile>
 </mat-grid-list>
 

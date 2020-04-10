@@ -12,7 +12,6 @@ export interface PokeTile {
   cols: number;
   rows: number;
   text: string;
-  details: Pokemon;
 }
 @Component({
   selector: 'app-item-list',
@@ -27,7 +26,6 @@ export class ItemListComponent implements OnInit {
     {value: 'element', viewValue: 'Element'}
   ];
 
-  pokemonDetails: Observable<Pokemon>;
   pokeList: PokemonListItem[];
   PokeListTiles: PokeTile[] = [];
   constructor(private pokemonService: PokemonService) { }
@@ -48,9 +46,8 @@ export class ItemListComponent implements OnInit {
       this.PokeListTiles.push({
         text: element.name,
         cols: 1,
-        rows: 1,
-        color: 'lightblue',
-        details: null
+        rows: 3,
+        color: 'lightblue'
       });
     });
   }

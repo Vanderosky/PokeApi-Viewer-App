@@ -41,11 +41,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { ItemListComponent } from './components/item-list/item-list.component';
+import { PokemonComponent } from './components/pokemon/pokemon.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ItemListComponent
+    ItemListComponent,
+    PokemonComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,7 @@
+<div *ngIf="pokemonDetailsFetched">
+    <img [src]="pokemonDetails.image"/>
+    <h1>{{pokemonDetails.name | titlecase}}</h1>
+    <h2>ID: {{pokemonDetails.id}}</h2>
+    <h2>Height: {{pokemonDetails.height}}</h2>
+    <h2>Weight: {{pokemonDetails.weight}}</h2>
+</div>
