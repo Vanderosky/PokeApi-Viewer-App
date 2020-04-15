@@ -1,6 +1,6 @@
 <div *ngIf="pokemonDetailsFetched">
-    <img [src]="pokemonDetails.image"/>
-    <h1>{{pokemonDetails.name | titlecase}}</h1>
+    <img [src]="pokemonDetails.image" class="picture" (click)="goToPokemonDetails()">
+    <h1><b>{{pokemonDetails.name | titlecase}}</b></h1>
     <h2>ID: {{pokemonDetails.id}}</h2>
     <h2>Height: {{pokemonDetails.height}}</h2>
     <h2>Weight: {{pokemonDetails.weight}}</h2>

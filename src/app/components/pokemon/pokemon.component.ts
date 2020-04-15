@@ -25,4 +25,8 @@ export class PokemonComponent implements OnInit {
       this.pokemonDetailsFetched = true;
     });
   }
+
+  goToPokemonDetails() {
+    console.log('pokemon details!');
+  }
 }
