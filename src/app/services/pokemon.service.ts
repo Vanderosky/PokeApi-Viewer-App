@@ -44,7 +44,26 @@ export class PokemonService {
       );
   }
 
-  mapPokemon(details): Pokemon {
+  fetchPokemonByType(name: string): Observable<PokemonListItem[]> {
+    const API = (this.API_URL + 'type/:name').replace(':name', name);
+    return this.performGet(API)
+      .pipe(
+        map((response: Response) => {
+          return this.mapPokemonsByType(response);
+        })
+      );
+  }
+
+  fetchPokemonTypes(): Observable<string[]> {
+    return this.performGet(this.API_URL + 'type')
+    .pipe(
+      map((response: Response) => {
+        return this.mapPokemonTypes(response);
+      })
+    );
+  }
+
+  mapPokemon(details: any): Pokemon {
     const types: string[] = [];
     for (const i in details.types) {
       if (details.types[i].type) {
@@ -78,5 +97,25 @@ export class PokemonService {
       }
     }
     return pokemonList;
+  }
+
+  mapPokemonsByType(details: any): PokemonListItem[] {
+    const pokemons: PokemonListItem[] = [];
+    for (const i in details.pokemon) {
+      if (details.pokemon[i].pokemon) {
+        pokemons.push(details.pokemon[i].pokemon.name);
+      }
+    }
+    return pokemons;
+  }
+
+  mapPokemonTypes(details: any): string[] {
+    const types: string[] = [];
+    for (const i in details.results) {
+      if (details.results[i].name) {
+        types.push(details.results[i].name);
+      }
+    }
+    return types;
   }
 }

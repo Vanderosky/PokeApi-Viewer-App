@@ -34,6 +34,7 @@ export class ItemListComponent implements OnInit {
   ngOnInit()  {
     this.gridBreakpoint = (window.innerWidth <= 1200) ? 2 : 3;
     this.getPokemons();
+    this.getPokemonTypes();
   }
 
   getPokemons() {
@@ -41,6 +42,17 @@ export class ItemListComponent implements OnInit {
       this.pokeList = data;
       this.pokeListCopy = data;
       this.transformPokemonsToTiles(this.pokeList);
+    });
+  }
+
+  getPokemonsByType(type: string) {
+    this.pokemonService.fetchPokemonByType('type').subscribe(data => {
+    });
+  }
+
+  getPokemonTypes() {
+    this.pokemonService.fetchPokemonTypes().subscribe(data => {
+      console.log(data);
     });
   }
 
