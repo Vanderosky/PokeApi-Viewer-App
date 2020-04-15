@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonService } from 'src/app/services/pokemon.service';
 import { Observable } from 'rxjs';
 import { PokemonListItem, Pokemon } from 'src/app/services/pokemon';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-item-list',
@@ -12,8 +13,7 @@ import { PokemonListItem, Pokemon } from 'src/app/services/pokemon';
 export class ItemListComponent implements OnInit {
   searchOptions: Option[] = [
     {value: 'name', viewValue: 'Name'},
-    {value: 'power', viewValue: 'Power'},
-    {value: 'element', viewValue: 'Element'}
+    {value: 'type', viewValue: 'Type'}
   ];
   sortOptions: Option[] = [
     {value: 'byId', viewValue: 'ID'},
@@ -28,6 +28,8 @@ export class ItemListComponent implements OnInit {
   searchOption = 'name';
   searchValue = '';
   gridBreakpoint: number;
+  pokemonTypes: string[] = [];
+  selectedPokemonTypes: string[];
 
   constructor(private pokemonService: PokemonService) { }
 
@@ -52,7 +54,7 @@ export class ItemListComponent implements OnInit {
 
   getPokemonTypes() {
     this.pokemonService.fetchPokemonTypes().subscribe(data => {
-      console.log(data);
+      this.pokemonTypes = data;
     });
   }
 
@@ -73,8 +75,16 @@ export class ItemListComponent implements OnInit {
       this.transformPokemonsToTiles(this.pokeListCopy);
       return;
     }
-    this.pokeList = this.pokeListCopy.filter(element => element.name.toLowerCase() === this.searchValue.toLowerCase());
-    this.transformPokemonsToTiles(this.pokeList);
+    if (this.searchOption === 'name') {
+      this.pokeList = this.pokeListCopy.filter(element => element.name.toLowerCase() === this.searchValue.toLowerCase());
+      this.transformPokemonsToTiles(this.pokeList);
+    }
+    if (this.searchOption === 'type') {
+      this.pokemonService.fetchPokemonByType(this.searchValue).subscribe(pokemons => {
+        this.pokeList = pokemons;
+        this.transformPokemonsToTiles(this.pokeList);
+      });
+    }
   }
 
   sortBy() {

@@ -103,7 +103,7 @@ export class PokemonService {
     const pokemons: PokemonListItem[] = [];
     for (const i in details.pokemon) {
       if (details.pokemon[i].pokemon) {
-        pokemons.push(details.pokemon[i].pokemon.name);
+        pokemons.push({name: details.pokemon[i].pokemon.name});
       }
     }
     return pokemons;

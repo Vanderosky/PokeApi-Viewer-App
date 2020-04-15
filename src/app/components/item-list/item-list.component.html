@@ -23,6 +23,13 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Types</mat-label>
+    <mat-select [(value)]="selectedPokemonTypes" multiple>
+      <mat-option *ngFor="let type of pokemonTypes" [value]="type">{{type | titlecase}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+{{selectedPokemonTypes}}
 </div>
 </mat-card>
 <mat-grid-list [cols]="gridBreakpoint" rowHeight="100px" (window:resize)="onResize($event)">

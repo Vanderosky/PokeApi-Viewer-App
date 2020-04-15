@@ -27,6 +27,5 @@ export class PokemonComponent implements OnInit {
   }
 
   goToPokemonDetails() {
-    console.log('pokemon details!');
   }
 }
