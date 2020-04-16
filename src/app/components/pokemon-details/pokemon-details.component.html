@@ -1,4 +1,9 @@
-<div *ngIf="pokemonFetched">
+<div *ngIf="pokemonNotFound">
+  <h3>
+    Pokemon not found!
+  </h3>
+</div>
+<div *ngIf="pokemonFetched && !pokemonNotFound">
   <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="header-image">

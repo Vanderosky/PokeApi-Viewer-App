@@ -12,6 +12,7 @@ export class PokemonDetailsComponent implements OnInit {
   pokemonDetails: Pokemon;
   pokemonNameParameter: string;
   pokemonFetched = false;
+  pokemonNotFound = false;
 
   constructor(private pokemonService: PokemonService, private route: ActivatedRoute) { }
 
@@ -24,6 +25,9 @@ export class PokemonDetailsComponent implements OnInit {
     this.pokemonService.fetchPokemonDetails(this.pokemonNameParameter).subscribe(details => {
       this.pokemonDetails = details;
       this.pokemonFetched = true;
+    },
+    (error) => {
+      this.pokemonNotFound = true;
     });
   }
 

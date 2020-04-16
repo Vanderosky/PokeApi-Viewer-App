@@ -133,7 +133,16 @@ export class ItemListComponent implements OnInit {
     this.transformPokemonsToTiles(this.pokeList);
   }
   onResize(event) {
-    this.gridBreakpoint = (event.target.innerWidth <= 1200) ? 2 : 3;
+    if (event.target.innerWidth <= 600) {
+      this.gridBreakpoint = 1;
+    }
+    if (event.target.innerWidth <= 1024 && event.target.innerWidth > 600) {
+      this.gridBreakpoint = 2;
+    }
+    if (event.target.innerWidth > 1400) {
+      this.gridBreakpoint = 3;
+    }
+    // this.gridBreakpoint = (event.target.innerWidth <= 1200) ? 2 : 3;
   }
 
   setOffset(offset: number) {
