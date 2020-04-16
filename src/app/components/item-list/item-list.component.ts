@@ -67,7 +67,7 @@ export class ItemListComponent implements OnInit {
     });
   }
 
-  transformPokemonsToTiles(data: PokemonListItem[]) {
+  transformPokemonsToTiles(data: PokemonListItem[], slice?: boolean) {
     this.PokeListTiles = [];
     data.forEach(element => {
       this.PokeListTiles.push({
@@ -77,6 +77,9 @@ export class ItemListComponent implements OnInit {
         color: '#efe5fd'
       });
     });
+    if (slice) {
+      this.PokeListTiles = this.PokeListTiles.slice(this.offset, this.offset + 20);
+    }
   }
 
   searchBy() {
@@ -89,16 +92,31 @@ export class ItemListComponent implements OnInit {
     this.router.navigateByUrl('/pokemon/' + this.searchValue);
   }
 
-  filterByTypes() {
-    const pokemonsForSearchedTypes: PokemonWithTypeListItem[] = [];
-    this.selectedPokemonTypes.forEach(type => {
-      (this.pokemonService.fetchPokemonByType(type).subscribe(pokemonList => {
-        pokemonList.forEach(pokemon => {
-          pokemonsForSearchedTypes.push(pokemon);
-        });
-      }));
-    });
-
+  async filterByTypes() {
+    if (this.selectedPokemonTypes.length === 0) {
+      this.transformPokemonsToTiles(this.pokeListCopy);
+    }
+    else if (this.selectedPokemonTypes.length === 1) {
+      this.pokemonService.fetchPokemonByType(this.selectedPokemonTypes[0]).subscribe(pokemonList => {
+        this.transformPokemonsToTiles(pokemonList);
+      });
+    } else {
+      const pokemonsForSearchedTypes: PokemonWithTypeListItem[] = [];
+      this.selectedPokemonTypes.forEach(type => {
+        (this.pokemonService.fetchPokemonByType(type).subscribe(pokemonList => {
+          pokemonList.forEach(pokemon => {
+            pokemonsForSearchedTypes.push(pokemon);
+          });
+        }));
+      });
+      await this.delay(500);
+      const countedPokemons = pokemonsForSearchedTypes.reduce((a, e) => {
+        a[e.name] = ++a[e.name] || 0;
+        return a;
+      }, {});
+      const pokemonsFiltered = pokemonsForSearchedTypes.filter(e => countedPokemons[e.name]);
+      this.transformPokemonsToTiles(pokemonsFiltered);
+    }
   }
 
   getRouteParameter() {
@@ -146,7 +164,6 @@ export class ItemListComponent implements OnInit {
     if (event.target.innerWidth > 1400) {
       this.gridBreakpoint = 3;
     }
-    // this.gridBreakpoint = (event.target.innerWidth <= 1200) ? 2 : 3;
   }
 
   setOffset(offset: number) {
@@ -162,6 +179,10 @@ export class ItemListComponent implements OnInit {
 
     this.getPokemons();
   }
+
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
 }
 
 interface Option {
