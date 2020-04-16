@@ -1,8 +1,8 @@
-<div *ngIf="pokemonDetailsFetched" class="flex-me">
+<div *ngIf="pokemonFetched">
   <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="header-image">
-        <img mat-card-image [src]="pokemonDetails.image" (click)="goToPokemonDetails()">
+        <img mat-card-image [src]="pokemonDetails.image">
       </div>
       <mat-card-title>{{pokemonDetails.name | titlecase}}</mat-card-title>
       <mat-card-subtitle>
@@ -12,12 +12,18 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <div align="center">
-        Weight: {{pokemonDetails.weight}}
-      </div>
-      <div align="center">
-        Height: {{pokemonDetails.height}}
-      </div>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Moves
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <li *ngFor="let move of pokemonDetails.moves">
+            {{move}};
+          </li>
+        </mat-expansion-panel>
+      </mat-accordion>
     </mat-card-content>
     <mat-card-actions>
     </mat-card-actions>

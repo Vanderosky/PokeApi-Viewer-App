@@ -43,12 +43,14 @@ import { MatTreeModule } from '@angular/material/tree';
 import { ItemListComponent } from './components/item-list/item-list.component';
 import { PokemonComponent } from './components/pokemon/pokemon.component';
 import { FormsModule } from '@angular/forms';
+import { PokemonDetailsComponent } from './components/pokemon-details/pokemon-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ItemListComponent,
-    PokemonComponent
+    PokemonComponent,
+    PokemonDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +68,7 @@ import { FormsModule } from '@angular/forms';
     MatExpansionModule,
     MatInputModule,
     MatCardModule,
+    MatExpansionModule,
     FormsModule
   ],
   providers: [],

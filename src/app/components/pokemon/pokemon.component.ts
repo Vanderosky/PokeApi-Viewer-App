@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PokemonService } from 'src/app/services/pokemon.service';
 import { Observable } from 'rxjs';
 import { Pokemon } from 'src/app/services/pokemon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon',
@@ -13,7 +14,7 @@ export class PokemonComponent implements OnInit {
   pokemonDetails: Pokemon;
   pokemonDetailsFetched = false;
 
-  constructor(private pokemonService: PokemonService) { }
+  constructor(private pokemonService: PokemonService, private router: Router) { }
 
   ngOnInit(): void {
     this.getPokemonDetails();
@@ -27,5 +28,6 @@ export class PokemonComponent implements OnInit {
   }
 
   goToPokemonDetails() {
+    this.router.navigateByUrl('/pokemon/' + this.pokemonName);
   }
 }
