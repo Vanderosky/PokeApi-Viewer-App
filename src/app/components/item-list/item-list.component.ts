@@ -3,7 +3,7 @@ import { PokemonService } from 'src/app/services/pokemon.service';
 import { Observable } from 'rxjs';
 import { PokemonListItem, Pokemon, PokemonWithTypeListItem } from 'src/app/services/pokemon';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-list',
@@ -31,7 +31,7 @@ export class ItemListComponent implements OnInit {
   pokemonCount = 964;
   offsetParameter = null;
 
-  constructor(private pokemonService: PokemonService, private route: ActivatedRoute) { }
+  constructor(private pokemonService: PokemonService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.getRouteParameter();
@@ -93,6 +93,7 @@ export class ItemListComponent implements OnInit {
         });
       });
     });
+    this.router.navigateByUrl('/pokemon/' + this.searchValue);
     // to finish
   }
 
