@@ -20,7 +20,19 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <li *ngFor="let move of pokemonDetails.moves">
-            {{move}};
+            {{move | titlecase}};
+          </li>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Stats
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <li *ngFor="let stat of pokemonDetails.stats">
+            {{stat.name | titlecase}}: {{stat.base_stat}}
           </li>
         </mat-expansion-panel>
       </mat-accordion>

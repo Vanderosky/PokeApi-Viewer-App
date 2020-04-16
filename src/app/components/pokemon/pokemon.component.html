@@ -1,8 +1,9 @@
-<div *ngIf="pokemonDetailsFetched" class="flex-me">
-  <mat-card>
+
+<div *ngIf="pokemonDetailsFetched">
+  <mat-card (click)="goToPokemonDetails()">
     <mat-card-header>
       <div mat-card-avatar class="header-image">
-        <img mat-card-image [src]="pokemonDetails.image" (click)="goToPokemonDetails()">
+        <img mat-card-image [src]="pokemonDetails.image">
       </div>
       <mat-card-title>{{pokemonDetails.name | titlecase}}</mat-card-title>
       <mat-card-subtitle>

@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { Observable } from 'rxjs';
-import { PokemonListItem, Pokemon, PokemonWithTypeListItem } from './pokemon';
+import { PokemonListItem, Pokemon, PokemonWithTypeListItem, Stats } from './pokemon';
 
 @Injectable({
   providedIn: 'root'
@@ -84,6 +84,16 @@ export class PokemonService {
       }
     }
 
+    const stats: Stats[] = [];
+    for (const x in details.stats) {
+      if (details.stats[x]) {
+        stats.push({
+          base_stat: details.stats[x].base_stat,
+          name: details.stats[x].stat.name
+        });
+      }
+    }
+
     const pokemon: Pokemon = {
       name: details.name,
       id: details.id,
@@ -91,7 +101,8 @@ export class PokemonService {
       height: details.height,
       image: details.sprites.front_default,
       types,
-      moves
+      moves,
+      stats
     };
     return pokemon;
   }

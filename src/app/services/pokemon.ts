@@ -6,6 +6,7 @@ export interface Pokemon {
   image: string;
   types: string[];
   moves: string[];
+  stats: Stats[];
 }
 
 export interface PokemonListItem {
@@ -16,3 +17,9 @@ export interface PokemonWithTypeListItem {
   name: string;
   types: string[];
 }
+
+export interface Stats {
+  base_stat: number;
+  name: string;
+}
+

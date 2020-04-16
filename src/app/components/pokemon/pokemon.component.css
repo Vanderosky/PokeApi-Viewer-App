@@ -3,11 +3,8 @@
 }
 
 .mat-card {
-    max-width: 400px;
-    max-height: 400px;
-  }
+    max-width: 600px;
+    min-height: 100px;
+    cursor: pointer;
 
-  .flex-me {
-  display: inline-flex;
-  flex-flow: row wrap;
-}
+  }

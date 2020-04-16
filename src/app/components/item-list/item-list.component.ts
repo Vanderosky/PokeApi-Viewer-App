@@ -70,7 +70,7 @@ export class ItemListComponent implements OnInit {
         text: element.name,
         cols: 1,
         rows: 3,
-        color: 'grey'
+        color: '#efe5fd'
       });
     });
   }
