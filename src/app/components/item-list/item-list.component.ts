@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from 'src/app/services/pokemon.service';
 import { Observable } from 'rxjs';
-import { PokemonListItem, Pokemon } from 'src/app/services/pokemon';
+import { PokemonListItem, Pokemon, PokemonWithTypeListItem } from 'src/app/services/pokemon';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -11,32 +11,28 @@ import { FormControl } from '@angular/forms';
 })
 
 export class ItemListComponent implements OnInit {
-  searchOptions: Option[] = [
-    {value: 'name', viewValue: 'Name'},
-    {value: 'type', viewValue: 'Type'}
-  ];
   sortOptions: Option[] = [
-    {value: 'byId', viewValue: 'ID'},
-    {value: 'byChar', viewValue: 'Name'},
-    {value: 'byWeight', viewValue: 'Weight'},
+    { value: 'byCharAsc', viewValue: 'Name ascending' },
+    { value: 'byCharDesc', viewValue: 'Name descending' },
   ];
 
-  pokeList: PokemonListItem[];
-  pokeListCopy: PokemonListItem[];
+  pokeList: PokemonListItem[] = [];
+  pokeListCopy: PokemonListItem[] = [];
   PokeListTiles: PokeTile[] = [];
   sortOption = 'byId';
-  searchOption = 'name';
   searchValue = '';
   gridBreakpoint: number;
   pokemonTypes: string[] = [];
-  selectedPokemonTypes: string[];
+  selectedPokemonTypes: string[] = [];
+  pokemonsDetailsList: Pokemon[] = [];
 
   constructor(private pokemonService: PokemonService) { }
 
-  ngOnInit()  {
+  ngOnInit() {
     this.gridBreakpoint = (window.innerWidth <= 1200) ? 2 : 3;
     this.getPokemons();
     this.getPokemonTypes();
+    this.getPokemonsDetails();
   }
 
   getPokemons() {
@@ -47,8 +43,11 @@ export class ItemListComponent implements OnInit {
     });
   }
 
-  getPokemonsByType(type: string) {
-    this.pokemonService.fetchPokemonByType('type').subscribe(data => {
+  getPokemonsDetails() {
+    this.pokeList.forEach(pokemon => {
+      this.pokemonService.fetchPokemonDetails(pokemon.name).subscribe(data => {
+        this.pokemonsDetailsList.push(data);
+      });
     });
   }
 
@@ -71,40 +70,45 @@ export class ItemListComponent implements OnInit {
   }
 
   searchBy() {
-    if (this.searchValue === '' || this.searchValue === null) {
-      this.transformPokemonsToTiles(this.pokeListCopy);
-      return;
+    if (((this.searchValue === '' || this.searchValue === null) && this.selectedPokemonTypes.length === 0)) {
+        this.transformPokemonsToTiles(this.pokeListCopy);
+        return;
     }
-    if (this.searchOption === 'name') {
-      this.pokeList = this.pokeListCopy.filter(element => element.name.toLowerCase() === this.searchValue.toLowerCase());
-      this.transformPokemonsToTiles(this.pokeList);
-    }
-    if (this.searchOption === 'type') {
-      this.pokemonService.fetchPokemonByType(this.searchValue).subscribe(pokemons => {
-        this.pokeList = pokemons;
-        this.transformPokemonsToTiles(this.pokeList);
+    this.pokeList = this.pokeListCopy.filter(element => element.name.toLowerCase() === this.searchValue.toLowerCase());
+    this.transformPokemonsToTiles(this.pokeList);
+    const pokemonsForSearchedTypes: PokemonWithTypeListItem[] = [];
+    this.selectedPokemonTypes.forEach(type => {
+      this.pokemonService.fetchPokemonByType(type).subscribe(pokemonList => {
+        pokemonList.forEach(pokemon => {
+          pokemonsForSearchedTypes.push(pokemon);
+        });
       });
-    }
+    });
+    // to finish
   }
 
   sortBy() {
-    if (this.sortOption === 'byChar') {
-      this.pokeList = this.pokeListCopy.sort((a, b) =>
-      {
+    if (this.sortOption === 'byCharAsc') {
+      this.pokeList = this.pokeListCopy.sort((a, b) => {
         if (a.name > b.name) {
-            return 1;
+          return 1;
         }
         if (a.name < b.name) {
-            return -1;
+          return -1;
         }
         return 0;
-    });
+      });
     }
-    if (this.sortOption === 'byId') {
-      this.transformPokemonsToTiles(this.pokeListCopy);
-    }
-    if (this.sortOption === 'byWeight') {
-      this.transformPokemonsToTiles(this.pokeListCopy);
+    if (this.sortOption === 'byCharDesc') {
+      this.pokeList = this.pokeListCopy.sort((a, b) => {
+        if (a.name < b.name) {
+          return 1;
+        }
+        if (a.name > b.name) {
+          return -1;
+        }
+        return 0;
+      });
     }
     this.transformPokemonsToTiles(this.pokeList);
   }

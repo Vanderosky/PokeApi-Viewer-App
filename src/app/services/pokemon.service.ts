@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { Observable } from 'rxjs';
-import { PokemonListItem, Pokemon } from './pokemon';
+import { PokemonListItem, Pokemon, PokemonWithTypeListItem } from './pokemon';
 
 @Injectable({
   providedIn: 'root'
@@ -44,12 +44,12 @@ export class PokemonService {
       );
   }
 
-  fetchPokemonByType(name: string): Observable<PokemonListItem[]> {
+  fetchPokemonByType(name: string): Observable<PokemonWithTypeListItem[]> {
     const API = (this.API_URL + 'type/:name').replace(':name', name);
     return this.performGet(API)
       .pipe(
         map((response: Response) => {
-          return this.mapPokemonsByType(response);
+          return this.mapPokemonsByType(response, name);
         })
       );
   }
@@ -99,11 +99,14 @@ export class PokemonService {
     return pokemonList;
   }
 
-  mapPokemonsByType(details: any): PokemonListItem[] {
-    const pokemons: PokemonListItem[] = [];
+  mapPokemonsByType(details: any, type: string): PokemonWithTypeListItem[] {
+    const pokemons: PokemonWithTypeListItem[] = [];
     for (const i in details.pokemon) {
       if (details.pokemon[i].pokemon) {
-        pokemons.push({name: details.pokemon[i].pokemon.name});
+        pokemons.push({
+          name: details.pokemon[i].pokemon.name,
+          types: [type]
+        });
       }
     }
     return pokemons;

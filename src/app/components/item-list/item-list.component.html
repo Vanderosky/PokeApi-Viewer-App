@@ -1,44 +1,36 @@
 <mat-card>
-  <div class="center-card">
-  <mat-form-field>
-    <mat-label>Search</mat-label>
-    <input matInput placeholder="Ex. Pikachu" [(ngModel)]="searchValue">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Search by</mat-label>
-    <mat-select [(value)]="searchOption">
-      <mat-option *ngFor="let option of searchOptions" [value]="option.value">
-        {{option.viewValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button mat-mini-fab >
-    <mat-icon (click)="searchBy()">search</mat-icon>
-  </button>
-  <mat-form-field>
-    <mat-label>Sort by</mat-label>
-    <mat-select (selectionChange)="sortBy()" [(value)]="sortOption">
-      <mat-option *ngFor="let option of sortOptions" [value]="option.value">
-        {{option.viewValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Types</mat-label>
-    <mat-select [(value)]="selectedPokemonTypes" multiple>
-      <mat-option *ngFor="let type of pokemonTypes" [value]="type">{{type | titlecase}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-{{selectedPokemonTypes}}
-</div>
+  <div class="customFlexContainer">
+    <div>
+      <mat-form-field>
+        <mat-label>Search by name</mat-label>
+        <input matInput placeholder="Ex. Pikachu" [(ngModel)]="searchValue">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Search by types</mat-label>
+        <mat-select [(value)]="selectedPokemonTypes" multiple>
+          <mat-option *ngFor="let type of pokemonTypes" [value]="type">{{type | titlecase}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-mini-fab>
+        <mat-icon (click)="searchBy()">search</mat-icon>
+      </button>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Sort by</mat-label>
+        <mat-select (selectionChange)="sortBy()" [(value)]="sortOption">
+          <mat-option *ngFor="let option of sortOptions" [value]="option.value">
+            {{option.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
 </mat-card>
+
 <mat-grid-list [cols]="gridBreakpoint" rowHeight="100px" (window:resize)="onResize($event)">
-  <mat-grid-tile 
-      *ngFor="let tile of PokeListTiles"
-      [colspan]="tile.cols"
-      [rowspan]="tile.rows"
-      [style.background]="tile.color">
+  <mat-grid-tile *ngFor="let tile of PokeListTiles" [colspan]="tile.cols" [rowspan]="tile.rows"
+    [style.background]="tile.color">
     <app-pokemon [pokemonName]="tile.text"></app-pokemon>
   </mat-grid-tile>
 </mat-grid-list>
-
