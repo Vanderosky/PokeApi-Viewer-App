@@ -25,6 +25,9 @@ export class ItemListComponent implements OnInit {
   pokemonTypes: string[] = [];
   selectedPokemonTypes: string[] = [];
   pokemonsDetailsList: Pokemon[] = [];
+  offset = 0;
+  limit = 0;
+  pokemonCount = 0;
 
   constructor(private pokemonService: PokemonService) { }
 
@@ -36,10 +39,13 @@ export class ItemListComponent implements OnInit {
   }
 
   getPokemons() {
-    this.pokemonService.fetchAllPokemon().subscribe(data => {
+    this.pokemonService.fetchAllPokemon(this.offset, this.limit).subscribe(data => {
       this.pokeList = data;
       this.pokeListCopy = data;
       this.transformPokemonsToTiles(this.pokeList);
+      this.sortBy();
+      this.pokemonCount = this.pokemonService.getPokemonCount();
+
     });
   }
 
@@ -114,6 +120,17 @@ export class ItemListComponent implements OnInit {
   }
   onResize(event) {
     this.gridBreakpoint = (event.target.innerWidth <= 1200) ? 2 : 3;
+  }
+
+  setOffset(offset: number) {
+    if ((this.offset === 0 && offset < 0)) {
+      return;
+    }
+    this.offset += offset;
+    if (this.offset > this.pokemonCount) {
+      return;
+    }
+    this.getPokemons();
   }
 }
 

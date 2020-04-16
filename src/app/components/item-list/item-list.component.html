@@ -2,6 +2,7 @@
   <div class="customFlexContainer">
     <div>
       <mat-form-field>
+        <mat-icon matSuffix (click)="searchBy()">search</mat-icon>
         <mat-label>Search by name</mat-label>
         <input matInput placeholder="Ex. Pikachu" [(ngModel)]="searchValue">
       </mat-form-field>
@@ -11,9 +12,6 @@
           <mat-option *ngFor="let type of pokemonTypes" [value]="type">{{type | titlecase}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-mini-fab>
-        <mat-icon (click)="searchBy()">search</mat-icon>
-      </button>
     </div>
     <div>
       <mat-form-field>
@@ -24,6 +22,24 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+  </div>
+  <div class="customFlexContainer">
+    <div>
+      <button mat-mini-fab>
+        <mat-icon (click)="setOffset(-20)">chevron_left</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="offset + 20 <= pokemonCount">
+      {{offset}}-{{offset + 20}}  of {{pokemonCount}}
+    </div>
+    <div *ngIf="offset + 20 > pokemonCount">
+      {{offset}}-{{pokemonCount}}  of {{pokemonCount}}
+    </div>
+    <div>
+      <button mat-mini-fab>
+        <mat-icon (click)="setOffset(20)">chevron_right</mat-icon>
+      </button>
     </div>
   </div>
 </mat-card>

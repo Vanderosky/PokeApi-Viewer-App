@@ -11,6 +11,7 @@ import { PokemonListItem, Pokemon, PokemonWithTypeListItem } from './pokemon';
 export class PokemonService {
 
   private API_URL = 'https://pokeapi.co/api/v2/';
+  private pokemonCount: number;
 
   constructor(private http: HttpClient) { }
 
@@ -25,8 +26,14 @@ export class PokemonService {
     );
   }
 
-  fetchAllPokemon(): Observable<PokemonListItem[]> {
-    return this.performGet(this.API_URL + 'pokemon')
+  fetchAllPokemon(offset?: number, limit?: number): Observable<PokemonListItem[]> {
+    if (!offset) {
+      offset = 0;
+    }
+    if (!limit) {
+      limit = 0;
+    }
+    return this.performGet(this.API_URL + 'pokemon?' + 'offset=' + offset + '&limit=' + limit)
       .pipe(
         map((response: Response) => {
           return this.mapPokemonList(response);
@@ -91,6 +98,7 @@ export class PokemonService {
 
   mapPokemonList(list: any): PokemonListItem[] {
     const pokemonList: PokemonListItem[] = [];
+    this.setPokemonCount(list.count);
     for (const i in list.results) {
       if (list.results[i]) {
         pokemonList.push({name: list.results[i].name});
@@ -120,5 +128,13 @@ export class PokemonService {
       }
     }
     return types;
+  }
+
+  setPokemonCount(count: number) {
+    this.pokemonCount = count;
+  }
+
+  getPokemonCount(): number {
+    return this.pokemonCount;
   }
 }
