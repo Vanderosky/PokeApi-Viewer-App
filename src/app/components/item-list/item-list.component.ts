@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from 'src/app/services/pokemon.service';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { PokemonListItem, Pokemon, PokemonWithTypeListItem } from 'src/app/services/pokemon';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-item-list',
@@ -80,21 +81,24 @@ export class ItemListComponent implements OnInit {
 
   searchBy() {
     if (((this.searchValue === '' || this.searchValue === null) && this.selectedPokemonTypes.length === 0)) {
-        this.transformPokemonsToTiles(this.pokeListCopy);
-        return;
+      this.transformPokemonsToTiles(this.pokeListCopy);
+      return;
     }
     this.pokeList = this.pokeListCopy.filter(element => element.name.toLowerCase() === this.searchValue.toLowerCase());
     this.transformPokemonsToTiles(this.pokeList);
+    this.router.navigateByUrl('/pokemon/' + this.searchValue);
+  }
+
+  filterByTypes() {
     const pokemonsForSearchedTypes: PokemonWithTypeListItem[] = [];
     this.selectedPokemonTypes.forEach(type => {
-      this.pokemonService.fetchPokemonByType(type).subscribe(pokemonList => {
+      (this.pokemonService.fetchPokemonByType(type).subscribe(pokemonList => {
         pokemonList.forEach(pokemon => {
           pokemonsForSearchedTypes.push(pokemon);
         });
-      });
+      }));
     });
-    this.router.navigateByUrl('/pokemon/' + this.searchValue);
-    // to finish
+
   }
 
   getRouteParameter() {
@@ -104,7 +108,7 @@ export class ItemListComponent implements OnInit {
         return;
       }
       this.setOffset(this.offsetParameter);
-  });
+    });
   }
 
   sortBy() {

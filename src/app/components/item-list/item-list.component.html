@@ -8,7 +8,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Search by types</mat-label>
-        <mat-select [(value)]="selectedPokemonTypes" multiple>
+        <mat-select [(value)]="selectedPokemonTypes" (selectionChange)="filterByTypes()" multiple>
           <mat-option *ngFor="let type of pokemonTypes" [value]="type">{{type | titlecase}}</mat-option>
         </mat-select>
       </mat-form-field>
