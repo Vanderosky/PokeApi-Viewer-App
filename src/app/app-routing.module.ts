@@ -7,6 +7,7 @@ import { PokemonDetailsComponent } from './components/pokemon-details/pokemon-de
 const routes: Routes = [
   { path: '', component: ItemListComponent },
   { path: 'pokemon', component: ItemListComponent },
+  { path: 'pokemon/offset/:number', component: ItemListComponent },
   { path: 'pokemon/:name', component: PokemonDetailsComponent },
   { path: '**', component: ItemListComponent }
 ];

@@ -3,6 +3,7 @@ import { PokemonService } from 'src/app/services/pokemon.service';
 import { Observable } from 'rxjs';
 import { PokemonListItem, Pokemon, PokemonWithTypeListItem } from 'src/app/services/pokemon';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-item-list',
@@ -27,11 +28,13 @@ export class ItemListComponent implements OnInit {
   pokemonsDetailsList: Pokemon[] = [];
   offset = 0;
   limit = 0;
-  pokemonCount = 0;
+  pokemonCount = 964;
+  offsetParameter = null;
 
-  constructor(private pokemonService: PokemonService) { }
+  constructor(private pokemonService: PokemonService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.getRouteParameter();
     this.gridBreakpoint = (window.innerWidth <= 1200) ? 2 : 3;
     this.getPokemons();
     this.getPokemonTypes();
@@ -93,6 +96,16 @@ export class ItemListComponent implements OnInit {
     // to finish
   }
 
+  getRouteParameter() {
+    this.route.paramMap.subscribe(params => {
+      this.offsetParameter = Number(params.get('number'));
+      if (isNaN(this.offsetParameter || this.offsetParameter < 0)) {
+        return;
+      }
+      this.setOffset(this.offsetParameter);
+  });
+  }
+
   sortBy() {
     if (this.sortOption === 'byCharAsc') {
       this.pokeList = this.pokeListCopy.sort((a, b) => {
@@ -123,13 +136,16 @@ export class ItemListComponent implements OnInit {
   }
 
   setOffset(offset: number) {
-    if ((this.offset === 0 && offset < 0)) {
+    if (this.offset + offset < 0) {
+      this.offset = 0;
+      this.getPokemons();
+      return;
+    }
+    if (this.offset + offset > this.pokemonCount) {
       return;
     }
     this.offset += offset;
-    if (this.offset > this.pokemonCount) {
-      return;
-    }
+
     this.getPokemons();
   }
 }
